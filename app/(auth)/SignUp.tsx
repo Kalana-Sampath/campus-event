@@ -7,9 +7,10 @@ import * as ImagePicker from 'expo-image-picker';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native';
 
-import { cld, options } from '@/CloudinaryConfig';
+import { cld, options } from '@/configs/CloudinaryConfig';
 import { upload } from 'cloudinary-react-native';
 
+import axios from 'axios';
 import { useRouter } from 'expo-router';
 
 export default function SignUp() {
@@ -31,15 +32,26 @@ export default function SignUp() {
     await upload (cld,{
       file:profileImage,
       options:options,
-      callback:async(error:any,response:any)=>{
+      callback:async(error:any, response:any)=>{
         if(error){
           console.log(error)
         }
         if (response)
         {
-          console.log(response?.url);
+          console.log(response?.url)
+          const result=await axios.post( process.env.EXPO_PUBLIC_HOST_URL+"/user",{
+            name:fullName,
+            email:email,
+            image:response?.url
+          });
+          console.log(result);
+          // Route to Home Screen
+          router.navigate('/landing'); 
+          
         }
+        
       }
+      
     })
     // createUserWithEmailAndPassword(auth, email, password)
     //   .then(async (userCredential) => {
@@ -53,7 +65,7 @@ export default function SignUp() {
     //     ToastAndroid.show(errorMsg, ToastAndroid.BOTTOM);
     //   });
 
-    router.navigate('/(auth)/SignIn');
+    
   };
 
   const pickImage = async () => {

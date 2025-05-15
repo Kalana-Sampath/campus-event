@@ -7,8 +7,14 @@
   npx expo install @react-native-async-storage/async-storage
   npm install cloudinary-react-native
 
+  npm i axios
+
 
 ## database setup
+(nile setup)
+$ npm i node-postgres
+
+## authentication 
 npm install firebase
 
    ## other commands
